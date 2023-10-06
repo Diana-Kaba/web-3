@@ -77,11 +77,11 @@ echo "</div>";
 function search($movies, $data) {
     $result = [];
     foreach ($movies as $movie_name => $movie) {
-        if (stristr($movie_name, $data)) {
+        if (mb_stristr($movie_name, $data)) {
             $result[] = $movie_name;
         }
         foreach ($movie as $value) {
-            if (stristr($value, $data)) {
+            if (mb_stristr($value, $data)) {
                 $result[] = $movie_name;
             }
         }
@@ -93,7 +93,7 @@ function search($movies, $data) {
     return $movies_search_result;
 }
 echo "\n\t<div><h2>Результат пошуку:</h2>\n";
-$searchRes = search($movies, 2011);
+$searchRes = search($movies, "прада");
 array_walk($searchRes, "try_walk", "Фільм - ");
 echo "</div>";
 ?>
