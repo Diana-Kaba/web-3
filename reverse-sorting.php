@@ -8,7 +8,7 @@ function cmp_str($a, $b)
     $a = strlen($a);
     $b = strlen($b);
 
-    // if ($a > $b) {
+    // if ($a < $b) {
     //     return 1;
     // }
     // if ($a == $b) {
@@ -17,7 +17,7 @@ function cmp_str($a, $b)
     //     return -1;
     // }
 
-    return $a <=> $b;
+    return $b <=> $a;
 }
 
 uasort($arr, "cmp_str");
