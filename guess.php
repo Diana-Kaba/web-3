@@ -1,11 +1,12 @@
 <?php
 
-$n = rand(1, 8); // Задумане число
 $count = 0; // Кількість спроб
 $text = ""; // Текст підсказки
 $nameErr = ""; // Повідомлення про помилку
+$n = rand(1, 8);
 
 if (isset($_POST['Submit'])) { // Якщо натиснута кнопка 'Submit'
+    $n = $_POST['hidd_n'];
     $count = $_POST['hidden'] + 1; // Збільшуємо лічильник на 1
 
     if (empty($_POST["my_number"])) { // Якщо нічого не ввели
@@ -27,10 +28,22 @@ if (isset($_POST['Submit'])) { // Якщо натиснута кнопка 'Subm
             $text = "Точно! Вгадано з $count спроби!<br/>";
         }
     }
-}?>
+}
+
+if (isset($_POST['Clear'])) { // Якщо натиснута кнопка 'Clear'
+    unset($_POST); // Видалення массиву $_POST
+    $count = 0;
+    $text = "";
+    $nameErr = "";
+    header("Location:" . $_SERVER['PHP_SELF']); // Перечитуємо ту ж саму сторінку
+    exit; // Выход
+}
+?>
 <p>Вгадай число от 1 до 8:</p>
 <form action="<?=$_SERVER['PHP_SELF']?>" name="myform" method="POST">
     <input type="text" name="my_number" size="5"><?=$text?><?=$nameErr?><br />
     <input type="hidden" name="hidden" size="50" value="<?=$count?>">
+    <input type="hidden" name="hidd_n" value="<?=$n?>">
     <input name="Submit" type="submit" value="Відправити"><br />
+    <input name="Clear" type="submit" value="Заново">
 </form>
