@@ -18,7 +18,7 @@ $students = [
     "arsen" => [
         "name" => "Арсеній",
         "email" => "arsen@mail.com",
-        "grade_average" => "3.5",
+        "grade_average" => "4.0",
         "olympiads" => false
     ],
     "mark" => [
@@ -35,7 +35,22 @@ $students = [
     ]
 ];
 
-$invitation["arsen"] = "scholarship_accrual";
-$invitation["mark"] = "calculation_premium";
-$invitation["misha"] = "expulsion";
-$invitation["kate"] = "gratitude";
+foreach ($students as $key => $stud_info) {
+    if ($key != "") {
+        foreach ($stud_info as $key1 => $info) {
+            if ($key1 == "olympiads" && $info == true) {
+                $invitation[$key] = "calculation_premium";
+            }
+
+            if ($key1 == "grade_average" && $info >= 4.0) {
+                $invitation[$key] = "scholarship_accrual";
+            }
+            if ($key1 == "grade_average" && $info == 5.0) {
+                $invitation[$key] = "gratitude";
+            }
+            else if ($key1 == "grade_average" && $info < 3.0) {
+                $invitation[$key] = "expulsion";
+            }
+        }
+    }
+}

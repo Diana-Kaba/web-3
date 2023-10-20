@@ -7,8 +7,6 @@ foreach ($students as $key => $stud_info) {
         foreach ($stud_info as $key1 => $info) {
             if ($key1 == "name")
                 $str = "Шановний/нa $info!";
-            if ($key1 == "email")
-                $email = $info;
         }
         $str .= " Інформуємо Вас щодо " .
                 $orders[$order_key];
