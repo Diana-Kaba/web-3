@@ -1,6 +1,6 @@
 <?php
 
-$arr = [" Dream of become a full-stack developer.", "Hello!", " I'm from Kharkiv.", " My name is Diana."];
+$arr = ["Dream of become a full-stack developer.", "Hello!", "I'm from Kharkiv.", "My name is Diana."];
 $sentence = "";
 
 function cmp_str($a, $b)
@@ -23,7 +23,7 @@ function cmp_str($a, $b)
 uasort($arr, "cmp_str");
 
 foreach ($arr as $elem) {
-    $sentence .= "$elem";
+    $sentence .= " $elem";
 }
 
 echo $sentence;
