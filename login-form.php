@@ -7,11 +7,23 @@ if (isset($_POST['sending'])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    if ($username === "admin" && $password === "1234") {
-        $str = "Вхід успішний. Ласкаво просимо!";
-    } else {
-        $str = "Помилка! Неправильний логін або пароль. Спробуйте ще раз.";
+    if (!preg_match('/^\w+$/', $username)) {
         $class = "error";
+        $str = "Помилка! Неправильний логін. Спробуйте ще раз.";
+    }
+    else if (!preg_match('/\d+[A-Z]|[А-Я]+\w+/', $password)) {
+        $class = "error";
+        $str = "Помилка! Неправильний пароль. Спробуйте ще раз.";
+    }
+    else {
+        $str = "Вхід успішний. Ласкаво просимо!";
+    }
+
+    if ($username === "admin" && $password === "admin") {
+        header("Location: admin.php?login={$username}");
+    }
+    else if ($username === "user" && $password === "user") {
+        header("Location: user.php?login={$username}");
     }
 }
 ?>
