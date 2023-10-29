@@ -54,10 +54,13 @@
 </head>
 <body>
     <h1>Кінофільми</h1>
-    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
+    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="search">
     <label for="inputData">Введіть пошук: </label>
     <input type="text" name="inputData" required>
     <br>
+    <input type="submit" value="Зберегти" name="sendingSearch" class="btn">
+    </form>
+    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="sort">
     <label for="sort">Оберіть сортування: </label>
     <select name="sort">
             <option value="cmp_director">Режисер</option>
@@ -65,10 +68,9 @@
             <option value="cmp_name">Назва</option>
     </select>
     <br>
-    <input type="submit" value="Відправити" name="sending" class="btn">
+    <input type="submit" value="Зберегти" name="sendingSort" class="btn">
     </form>
-
-    <?php
+<?php
 
 include_once "db-movies.php";
 
@@ -111,17 +113,21 @@ function search($movies, $data) {
     return $movies_search_result;
 }
 
-$inputData = "";
-$sort = "";
-if (isset($_POST['sending'])) {
+if (isset($_POST['sendingSearch'])) {
     $inputData = $_POST["inputData"];
-    $sort = $_POST["sort"];
-
     echo "\n\t<div><h2>Результат пошуку:</h2>\n";
     $searchRes = search($movies, $inputData);
-    uasort($movies, $sort);
     array_walk($searchRes, "try_walk", "Фільм - ");
     echo "</div>";
+}
+if (isset($_POST['sendingSort'])) {
+        $inputData = $_POST["inputData"];
+        echo "\n\t<div><h2>Результат пошуку з <i>сортуванням</i>:</h2>\n";
+        $searchRes = search($movies, $inputData);
+        $sort = $_POST["sort"];
+        uasort($movies, $sort);
+        array_walk($searchRes, "try_walk", "Фільм - ");
+        echo "</div>";
 }
 ?>
 </body>
