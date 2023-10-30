@@ -113,22 +113,35 @@ function search($movies, $data) {
     return $movies_search_result;
 }
 
-if (isset($_POST['sendingSearch'])) {
+function sorting($how_to_sort)
+{
+    global $movies;
+    uasort($movies, $how_to_sort);
+}
+
+function show() {
+    global $movies;
     $inputData = $_POST["inputData"];
     echo "\n\t<div><h2>Результат пошуку:</h2>\n";
     $searchRes = search($movies, $inputData);
     array_walk($searchRes, "try_walk", "Фільм - ");
     echo "</div>";
 }
-if (isset($_POST['sendingSort'])) {
-        $inputData = $_POST["inputData"];
-        echo "\n\t<div><h2>Результат пошуку з <i>сортуванням</i>:</h2>\n";
-        $searchRes = search($movies, $inputData);
-        $sort = $_POST["sort"];
-        uasort($movies, $sort);
-        array_walk($searchRes, "try_walk", "Фільм - ");
-        echo "</div>";
+
+
+// if (isset($_POST['sendingSearch'])) {
+//     if (isset($_POST['sendingSort'])) {
+//         $how_to_sort = $_POST["sort"];
+//         sorting($how_to_sort);
+//     }
+//     show();
+// }
+
+if (isset($_POST["sort"])) {
+    $how_to_sort = $_POST["sort"];
+    sorting($how_to_sort);
 }
+show();
 ?>
 </body>
 </html>
