@@ -1,3 +1,73 @@
+<?php
+
+include_once "db-movies.php";
+
+$title = "Кінофільми";
+
+function try_walk($val, $key, $data)
+{
+    echo "\t<p>$data\"$key\": $val[0], $val[1], ($val[2])</p>\n";
+}
+
+function cmp_director($a, $b)
+{
+    return $a[0] <=> $b[0];
+}
+
+function cmp_year($a, $b)
+{
+    return $a[1] <=> $b[1];
+}
+
+function cmp_name($a, $b)
+{
+    return $a <=> $b;
+}
+
+function search($movies, $data) {
+    $result = [];
+    foreach ($movies as $movie_name => $movie) {
+        if (mb_stristr($movie_name, $data)) {
+            $result[] = $movie_name;
+        }
+        foreach ($movie as $value) {
+            if (mb_stristr($value, $data)) {
+                $result[] = $movie_name;
+            }
+        }
+    }
+
+    $noDuplic = array_unique($result);
+    $search_result = array_flip($noDuplic);
+    $movies_search_result = array_intersect_key($movies, $search_result);
+    return $movies_search_result;
+}
+
+function sorting($how_to_sort)
+{
+    global $movies;
+    uasort($movies, $how_to_sort);
+}
+
+function show($arr = null) {
+    global $movies;
+    $arr = $arr ? $arr : $movies;
+    echo "\n\t<div><h2>Наявні кінофільми:</h2>\n";
+    array_walk($arr, "try_walk", "Фільм - ");
+    echo "</div>";
+}
+
+if (isset($_POST['sendingSearch'])) {
+    $title = "Результат пошуку:";
+}
+
+if (isset($_POST["sort"])) {
+    $how_to_sort = $_POST["sort"];
+    sorting($how_to_sort);
+}
+show();
+?>
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -53,13 +123,20 @@
     </style>
 </head>
 <body>
-    <h1>Кінофільми</h1>
+    <h1><?= $title ?></h1>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="search">
     <label for="inputData">Введіть пошук: </label>
     <input type="text" name="inputData" required>
     <br>
     <input type="submit" value="Зберегти" name="sendingSearch" class="btn">
     </form>
+    <?php
+    if (isset($_POST['sendingSearch'])) {
+        $title = "Результат пошуку";
+        $data = $_POST["inputData"];
+        show(search($movies, $data));
+    }
+    ?>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="sort">
     <label for="sort">Оберіть сортування: </label>
     <select name="sort">
@@ -70,78 +147,5 @@
     <br>
     <input type="submit" value="Зберегти" name="sendingSort" class="btn">
     </form>
-<?php
-
-include_once "db-movies.php";
-
-function try_walk($val, $key, $data)
-{
-    echo "\t<p>$data\"$key\": $val[0], $val[1], ($val[2])</p>\n";
-}
-
-function cmp_director($a, $b)
-{
-    return $a[0] <=> $b[0];
-}
-
-function cmp_year($a, $b)
-{
-    return $a[1] <=> $b[1];
-}
-
-function cmp_name($a, $b)
-{
-    return $a <=> $b;
-}
-
-function search($movies, $data) {
-    $result = [];
-    foreach ($movies as $movie_name => $movie) {
-        if (mb_stristr($movie_name, $data)) {
-            $result[] = $movie_name;
-        }
-        foreach ($movie as $value) {
-            if (mb_stristr($value, $data)) {
-                $result[] = $movie_name;
-            }
-        }
-    }
-
-    $noDuplic = array_unique($result);
-    $search_result = array_flip($noDuplic);
-    $movies_search_result = array_intersect_key($movies, $search_result);
-    return $movies_search_result;
-}
-
-function sorting($how_to_sort)
-{
-    global $movies;
-    uasort($movies, $how_to_sort);
-}
-
-function show() {
-    global $movies;
-    $inputData = $_POST["inputData"];
-    echo "\n\t<div><h2>Результат пошуку:</h2>\n";
-    $searchRes = search($movies, $inputData);
-    array_walk($searchRes, "try_walk", "Фільм - ");
-    echo "</div>";
-}
-
-
-// if (isset($_POST['sendingSearch'])) {
-//     if (isset($_POST['sendingSort'])) {
-//         $how_to_sort = $_POST["sort"];
-//         sorting($how_to_sort);
-//     }
-//     show();
-// }
-
-if (isset($_POST["sort"])) {
-    $how_to_sort = $_POST["sort"];
-    sorting($how_to_sort);
-}
-show();
-?>
 </body>
 </html>
