@@ -3,6 +3,7 @@
 include_once "db-movies.php";
 
 $title = "Кінофільми";
+$str = "Фільми виведени згідно порядку в базі даних...";
 
 function try_walk($val, $key, $data)
 {
@@ -45,15 +46,27 @@ function search($movies, $data) {
 
 function sorting($how_to_sort)
 {
-    global $movies;
+    global $movies, $str;
     uasort($movies, $how_to_sort);
+    switch ($how_to_sort) {
+        case "cmp_director":
+            $str = "Сортування відбулось за режисерами...";
+            break;
+        case "cmp_year":
+            $str = "Сортування відбулось за датою випуску...";
+            break;
+        case "cmp_name":
+            $str = "Сортування відбулось за назвою...";
+            break;
+    }
 }
 
 function show($arr = null) {
-    global $movies;
+    global $movies, $str;
     $arr = $arr ? $arr : $movies;
     echo "\n\t<div><h2>Наявні кінофільми:</h2>\n";
     array_walk($arr, "try_walk", "Фільм - ");
+    echo "<p><i>$str</i></p>";
     echo "</div>";
 }
 
@@ -130,13 +143,6 @@ show();
     <br>
     <input type="submit" value="Зберегти" name="sendingSearch" class="btn">
     </form>
-    <?php
-    if (isset($_POST['sendingSearch'])) {
-        $title = "Результат пошуку";
-        $data = $_POST["inputData"];
-        show(search($movies, $data));
-    }
-    ?>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="sort">
     <label for="sort">Оберіть сортування: </label>
     <select name="sort">
@@ -147,5 +153,12 @@ show();
     <br>
     <input type="submit" value="Зберегти" name="sendingSort" class="btn">
     </form>
+    <?php
+    if (isset($_POST['sendingSearch'])) {
+        $title = "Результат пошуку";
+        $data = $_POST["inputData"];
+        show(search($movies, $data));
+    }
+    ?>
 </body>
 </html>
