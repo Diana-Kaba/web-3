@@ -137,6 +137,13 @@ if (isset($_POST['sendingSearch'])) {
     <br>
     <input type="submit" value="Зберегти" name="sendingSearch" class="btn">
     </form>
+    <?php
+        if (isset($_POST['sendingSearch'])) {
+            $title = "Результат пошуку";
+            $data = $_POST["inputData"];
+            show(search($movies, $data));
+        }
+    ?>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" name="sort">
     <label for="sort">Оберіть сортування: </label>
     <select name="sort">
@@ -148,12 +155,6 @@ if (isset($_POST['sendingSearch'])) {
     <input type="submit" value="Зберегти" name="sendingSort" class="btn">
     </form>
     <?php
-    if (isset($_POST['sendingSearch'])) {
-        $title = "Результат пошуку";
-        $data = $_POST["inputData"];
-        show(search($movies, $data));
-    }
-
     if (isset($_POST["sort"])) {
     $how_to_sort = $_POST["sort"];
     sorting($how_to_sort);
