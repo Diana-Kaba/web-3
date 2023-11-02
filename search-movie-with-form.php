@@ -73,12 +73,6 @@ function show($arr = null) {
 if (isset($_POST['sendingSearch'])) {
     $title = "Результат пошуку:";
 }
-
-if (isset($_POST["sort"])) {
-    $how_to_sort = $_POST["sort"];
-    sorting($how_to_sort);
-}
-show();
 ?>
 
 <!DOCTYPE html>
@@ -159,6 +153,12 @@ show();
         $data = $_POST["inputData"];
         show(search($movies, $data));
     }
+
+    if (isset($_POST["sort"])) {
+    $how_to_sort = $_POST["sort"];
+    sorting($how_to_sort);
+    }
+    show();
     ?>
 </body>
 </html>
