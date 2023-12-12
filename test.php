@@ -49,5 +49,13 @@ $re = '|<(\w+)>(.*?)</\1>|';
 preg_match($re, $str, $pockets);
 // echo $pockets[2];
 
-echo (int)(4.5);
+// echo (int)(4.5);
+// $a = array("a" => "apple", "b" => "banana", "c" => "bread");
+// print_r(array_chunk ($a, 1, true));
+
+$arr1 = [1, 2, 3, 4];
+$arr2 = [];
+while (list(, $arr1[]) = each($arr2)){} unset($arr1[sizeof($arr1)-1]);
+print_r($arr2);
+
 ?>
