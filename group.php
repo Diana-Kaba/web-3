@@ -31,4 +31,14 @@ $students = [
             "HTML" => 5,
         ],
     ],
+    [
+        "name" => "Scott",
+        "surname" => "Addams",
+        "year" => 2004,
+        "marks" => [
+            "PHP" => 5,
+            "JS" => 5,
+            "HTML" => 5,
+        ],
+    ],
 ];

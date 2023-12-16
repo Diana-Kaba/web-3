@@ -6,31 +6,22 @@ $image = imagecreatetruecolor(100, 100);
 
 $white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 $gray = imagecolorallocate($image, 0xC0, 0xC0, 0xC0);
-$darkgray = imagecolorallocate($image, 0x90, 0x90, 0x90);
 $navy = imagecolorallocate($image, 0x00, 0x00, 0x80);
-$darknavy = imagecolorallocate($image, 0x00, 0x00, 0x50);
 $red = imagecolorallocate($image, 0xFF, 0x00, 0x00);
-$darkred = imagecolorallocate($image, 0x90, 0x00, 0x00);
+$colors = [5 => $red, 4 => $navy, 3 => $gray, 2 => $white];
 
-// for ($i = 60; $i > 50; $i--) {
-	// imagefilledarc($image, 50, $i, 100, 50, 0, 45, $darknavy, IMG_ARC_PIE);
-	// imagefilledarc($image, 50, $i, 100, 50, 45, 75 , $darkgray, IMG_ARC_PIE);
-	// imagefilledarc($image, 50, $i, 100, 50, 75, 360 , $darkred, IMG_ARC_PIE);
-// }
-
-foreach ($students as $key => $value) {
-    if(is_array($value)) {
-       for ($i=0; $i < count($value); $i++) { 
-        imagefilledarc($image, 50, $i, 100, 50, 0, 45, $darknavy, IMG_ARC_PIE);
-        imagefilledarc($image, 50, $i, 100, 50, 45, 75 , $darkgray, IMG_ARC_PIE);
-        imagefilledarc($image, 50, $i, 100, 50, 75, 360 , $darkred, IMG_ARC_PIE);
-       }
-    }
+$average = [];
+for ($i = 0; $i < count($students); $i++) {
+    $average[] = (int) round(array_sum($students[$i]["marks"]) / count($students[$i]["marks"]));
 }
+$stat = array_count_values($average);
+$unit_deg = 360 / count($students);
 
-imagefilledarc($image, 50, 50, 100, 50, 0, 45, $navy, IMG_ARC_PIE);
-imagefilledarc($image, 50, 50, 100, 50, 45, 75 , $gray, IMG_ARC_PIE);
-imagefilledarc($image, 50, 50, 100, 50, 75, 360 , $red, IMG_ARC_PIE);
+$corner = 0;
+foreach ($stat as $key => $value) {
+    imagefilledarc($image, 50, 50, 100, 100, $corner, $corner + $unit_deg * $value, $colors[$key], IMG_ARC_PIE);
+    $corner += $unit_deg * $value;
+}
 
 header('Content-type: image/png');
 imagepng($image);
